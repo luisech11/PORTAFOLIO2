@@ -9,7 +9,7 @@ export default [
       title: 'Project web site',
       imgUrl: '/assets/camisetas.jpg',
       stack: ['JavaScript', 'CSS', 'HTML'],
-      link: 'https://github.com/luisech11/El-proyecto-xd',
+      link: 'https://proyectoacademlo.netlify.app',
    },
    {
       title: 'Proximamente...',

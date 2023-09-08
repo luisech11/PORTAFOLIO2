@@ -39,13 +39,41 @@ function Intro() {
 
   const nameVariants = {
     hidden: {
-      color: '#FFD700', // Cambia el color de tu nombre aquí
+      color: '#FFD700',
     },
     visible: {
-      color: '#00BFFF', // Cambia el color de tu nombre aquí
+      color: '#ff9900',
       transition: {
         delay: 1.5,
         duration: 1,
+      },
+    },
+  };
+
+  const imageVariants = {
+    hidden: {
+      opacity: 0,
+      scale: 0.9, 
+    },
+    visible: {
+      opacity: 1,
+      scale: 1, 
+      transition: {
+        duration: 1, 
+        delay: 1, 
+      },
+    },
+  };
+
+  const borderVariants = {
+    hidden: {
+      width: 5, 
+    },
+    visible: {
+      width: '100%', 
+      transition: {
+        duration: 1, 
+        delay: 1, 
       },
     },
   };
@@ -57,65 +85,65 @@ function Intro() {
       animate="visible"
       variants={containerVariants}
     >
-      <video
-        autoPlay
-        loop
-        muted
-        className="absolute inset-0 w-full h-full object-cover"
-      >
-        <source src="/video/videolap.mp4" type="video/mp4" />
-        Tu navegador no admite la etiqueta de video.
-      </video>
+      <div className="flex flex-col md:flex-row items-center justify-center text-center pt-12 pb-8 md:pt-16 md:pb-12 relative z-10">
+        <div className="md:w-1/2 md:text-center">
+          <motion.div
+            className="rounded-full overflow-hidden w-72 h-72 md:w-80 md:h-80 mt-4 mx-auto relative"
+            variants={imageVariants} // Aplicar animación a la imagen
+          >
+            <motion.img
+              src="/imgME/imgmia.png"
+              alt="My Image"
+              className="w-full h-full object-cover"
+            />
+            <motion.div
+              className="border-4 border-blue-400 absolute inset-0"
+              variants={borderVariants} // Aplicar animación al borde
+            ></motion.div>
+          </motion.div>
+        </div>
 
-      <motion.div className="flex items-center justify-center flex-col text-center pt-20 pb-16 relative z-10">
-        <motion.h1
-          variants={childVariants}
-          className="text-5xl md:text-7xl font-extrabold"
-        >
-          ¡HELLO!
-        </motion.h1>
+        <div className="md:w-1/2 md:pl-6">
+          <motion.h1
+            variants={childVariants}
+            className="text-3xl md:text-5xl font-extrabold text-blue-400"
+          >
+            Welcome to My World!
+          </motion.h1>
 
-        <motion.span
-          variants={childVariants}
-          initial="hidden"
-          animate="visible"
-          variants={nameVariants}
-          className="text-5xl md:text-7xl font-extrabold"
-        >
-          I'm{' '}
           <motion.span
+            variants={childVariants}
             initial="hidden"
             animate="visible"
-            variants={nameVariants}
+            className="text-4xl md:text-6xl font-extrabold"
           >
-            Luis Miguel Echeverry
+            I'm{' '}
+            <motion.span
+              initial="hidden"
+              animate="visible"
+              variants={nameVariants}
+              className="text-orange-500"
+            >
+              Luis Miguel Echeverry
+            </motion.span>
           </motion.span>
-        </motion.span>
 
+          <motion.p
+            variants={childVariants}
+            className="text-lg md:text-xl mb-4 md:mb-6 font-medium text-blue-400"
+          >
+            Web Developer | Musician
+          </motion.p>
+        </div>
+      </div>
+      <div className="md:text-center">
         <motion.p
           variants={childVariants}
-          className="text-lg md:text-xl mb-6 font-medium text-blue-400"
-        >
-          Web Developer | Musician
-        </motion.p>
-
-        <motion.p
-          variants={childVariants}
-          className="text-lg md:text-xl max-w-3xl mb-6"
+          className="text-sm md:text-base max-w-md mb-4 md:mb-6"
         >
           Welcome to my digital world! I am a passionate freelance web developer and musician. My passion is combining my musical creativity with my web development skills to create unique online experiences. In this space, you will be able to explore my portfolio and learn more about my exciting projects. Join me on this digital journey!
         </motion.p>
-
-        <motion.a
-          href="https://wa.me/+573144175184?text=%C2%A1Hola%20programador!%20:)"
-          target="_blank"
-          rel="noopener noreferrer"
-          variants={childVariants}
-          className="bg-black hover:bg-green-500 text-white font-semibold py-2 px-6 rounded-full text-lg transition duration-300 ease-in-out transform hover:scale-105"
-        >
-          ¡Talk to me by Whatsapp!
-        </motion.a>
-      </motion.div>
+      </div>
     </motion.div>
   );
 }

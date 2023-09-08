@@ -4,11 +4,12 @@ import Footer from "./components/Footer";
 import Intro from "./components/Intro";
 import Portfolio from "./components/Portfolio";
 import Timeline from "./components/Timeline";
-import { motion, useAnimation } from "framer-motion"; // Import Framer Motion
+import { motion } from "framer-motion";
 
 function App() {
   const [theme, setTheme] = useState(null);
-  const controls = useAnimation(); // Animation controller
+  const [scrollDirection, setScrollDirection] = useState("down");
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
@@ -18,10 +19,6 @@ function App() {
     }
   }, []);
 
-  const handleThemeSwitch = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  };
-
   useEffect(() => {
     if (theme === "dark") {
       document.documentElement.classList.add("dark");
@@ -30,98 +27,168 @@ function App() {
     }
   }, [theme]);
 
-  const scrollToSection = (sectionId) => {
-    const section = document.getElementById(sectionId);
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
-  // Function to start continuous animation
-  const startContinuousAnimation = async () => {
-    while (true) {
-      await controls.start({
-        x: 100,
-        transition: { duration: 4, ease: "easeInOut" },
-      });
-      await controls.start({
-        x: 0,
-        transition: { duration: 4, ease: "easeInOut" },
-      });
+  const handleScroll = () => {
+    const currentScrollY = window.scrollY;
+    if (currentScrollY > window.scrollY) {
+      setScrollDirection("down");
+    } else {
+      setScrollDirection("up");
     }
   };
 
   useEffect(() => {
-    startContinuousAnimation();
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
-  return (
-    <div className="relative bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-screen font-inter">
-      <button
-        type="button"
-        onClick={handleThemeSwitch}
-        className="fixed p-2 z-10 right-6 top-6 bg-blue-600 dark:bg-orange-500 text-lg p-1 rounded-full"
-      >
-        {theme === "dark" ? "Light" : "Dark"}
-      </button>
-      <div className="max-w-5xl w-11/12 mx-auto">
-       
-        <nav className="bg-gray-800 text-white py-4">
-          <div className="max-w-5xl w-11/12 mx-auto flex justify-center space-x-8">
-            <a
-              href="#intro"
-              onClick={() => scrollToSection("intro")}
-              className="hover:text-blue-400 cursor-pointer"
-            >
-              Home
-            </a>
-            <a
-              href="#portfolio"
-              onClick={() => scrollToSection("portfolio")}
-              className="hover:text-blue-400 cursor-pointer"
-            >
-              Portfolio
-            </a>
-            <a
-              href="#timeline"
-              onClick={() => scrollToSection("timeline")}
-              className="hover:text-blue-400 cursor-pointer"
-            >
-              Timeline
-            </a>
-            <a
-              href="#contact"
-              onClick={() => scrollToSection("contact")}
-              className="hover:text-blue-400 cursor-pointer"
-            >
-              Contact Me
-            </a>
-          </div>
-        </nav>
-        <section id="intro">
-          <Intro name="Luis Miguel Echeverry" />
-        </section>
-        <section id="portfolio">
-          <Portfolio />
-        </section>
-        <section id="timeline">
-          <Timeline />
-        </section>
-        <section id="contact">
-          <h2 className="text-2xl font-semibold mb-4">Contact Me</h2>
-          <Contact />
-        </section>
-        <Footer />
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
 
-        {/* Animated phrase with Framer Motion and Tailwind CSS */}
-        <motion.div
-          animate={controls} // Use the animation controller
-          className="bg-black text-white py-2 px-4 text-center mt-6 rounded-full"
-        >
-          <p className="text-sm">Thanks for visiting my website!</p>
-        </motion.div>
-        {/* End of the animated phrase */}
+  const scrollVariants = {
+    hidden: {
+      opacity: 0,
+      y: scrollDirection === "down" ? 20 : -20,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+      },
+    },
+  };
+
+  const menuVariants = {
+    hidden: {
+      y: "100%",
+    },
+    visible: {
+      y: 0,
+      transition: {
+        duration: 0.5,
+      },
+    },
+  };
+
+  const introVariants = {
+    hidden: {
+      opacity: 0,
+      y: -20,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: 0.3,
+        duration: 0.8,
+      },
+    },
+  };
+
+  const portfolioVariants = {
+    hidden: {
+      opacity: 0,
+      y: -20,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: 0.3,
+        duration: 0.8,
+      },
+    },
+  };
+
+  const timelineVariants = {
+    hidden: {
+      opacity: 0,
+      y: -20,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: 0.3,
+        duration: 0.8,
+      },
+    },
+  };
+
+  const contactVariants = {
+    hidden: {
+      opacity: 0,
+      y: -20,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: 0.3,
+        duration: 0.8,
+      },
+    },
+  };
+
+  return (
+    <div className={`relative bg-white ${theme === "dark" ? "dark:bg-gray-900" : ""} text-gray-800 ${theme === "dark" ? "dark:text-gray-100" : ""} min-h-screen font-inter`}>
+      {/* Contenido principal */}
+      <div className="max-w-5xl w-11/12 mx-auto">
+        <Intro variants={introVariants} />
+        <Portfolio variants={portfolioVariants} />
+        <Timeline variants={timelineVariants} />
+        <Contact variants={contactVariants} />
+        <Footer />
       </div>
+
+      <motion.div
+        className={`fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 p-4 shadow-md ${menuOpen ? "" : "hidden"}`}
+        variants={menuVariants}
+        initial="hidden"
+        animate={menuOpen ? "visible" : "hidden"}
+      >
+        <div className="flex justify-between items-center">
+          {/* Logotipo del menú */}
+          <div className="block text-gray-800 dark:text-gray-100 text-xl font-bold mx-2">Menú</div>
+          <div className="flex space-x-4 items-center">
+            <button
+              className="text-2xl"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            >
+              🏠
+            </button>
+            <button
+              className="text-2xl"
+              onClick={() => window.scrollTo({ top: document.querySelector("#portfolio").offsetTop, behavior: "smooth" })}
+            >
+              📚
+            </button>
+            <button
+              className="text-2xl"
+              onClick={() => window.scrollTo({ top: document.querySelector("#Timeline").offsetTop, behavior: "smooth" })}
+            >
+              📆
+            </button>
+            <button
+              className="text-2xl"
+              onClick={() => window.scrollTo({ top: document.querySelector("#Contact").offsetTop, behavior: "smooth" })}
+            >
+              ✉️
+            </button>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Botón para abrir/cerrar el menú */}
+      <button
+        className="fixed bottom-10 right-4 p-4 rounded-full bg-gray-800 text-white hover:bg-gray-900 focus:outline-none"
+        onClick={toggleMenu}
+      >
+        {menuOpen ? "Cerrar" : "Menú"}
+      </button>
     </div>
   );
 }
