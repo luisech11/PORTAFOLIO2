@@ -92,7 +92,7 @@ function Intro() {
             variants={imageVariants} // Aplicar animación a la imagen
           >
             <motion.img
-              src="/imgME/imgmia.png"
+              src="/assets/Imgmia.png"
               alt="My Image"
               className="w-full h-full object-cover"
             />
